@@ -33,10 +33,10 @@ const LoginForm = () => {
         ) : (
           <Button>Entrar</Button>
         )}
-        <Error error={error && "Dados incorretos."} />
+        <Error error={error && "Invalid credentials."} />
       </form>
-      <Link className={styles.perdeu} to="/login/perdeu">
-        Perdeu a senha?
+      <Link className={styles.perdeu} to="/login/lost">
+        Lost your password?
       </Link>
       <div className={styles.cadastro}>
         <h2 className={styles.subtitle}>Cadastre-se</h2>
