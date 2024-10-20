@@ -32,9 +32,9 @@ const LoginPasswordReset = () => {
         <form onSubmit={handleSubmit}>
           <Input label="Email / Usuário" type="text" name="login" {...login} />
           {loading ? (
-            <Button disabled>Enviando...</Button>
+            <Button disabled>Sending...</Button>
           ) : (
-            <Button>Enviar email</Button>
+            <Button>Send email</Button>
           )}
         </form>
       )}
