@@ -1,40 +1,40 @@
-import React from "react";
-import styles from "./UserPhotoPost.module.css";
-import useForm from "../../Hooks/useForm";
-import useFetch from "../../Hooks/useFetch";
-import Input from "../Forms/Input";
-import Button from "../Forms/Button";
-import Error from "../Helper/Error";
-import { PHOTO_POST } from "../../Api";
-import { useNavigate } from "react-router-dom";
-import Head from "../Helper/Head";
+import React from 'react';
+import styles from './UserPhotoPost.module.css';
+import useForm from '../../Hooks/useForm';
+import useFetch from '../../Hooks/useFetch';
+import Input from '../Forms/Input';
+import Button from '../Forms/Button';
+import Error from '../Helper/Error';
+import { PHOTO_POST } from '../../Api';
+import { useNavigate } from 'react-router-dom';
+import Head from '../Helper/Head';
 
 const UserPhotoPost = () => {
   const nome = useForm();
-  const peso = useForm("number");
-  const idade = useForm("number");
+  const peso = useForm('number');
+  const idade = useForm('number');
   const [img, setImg] = React.useState({});
   const { data, error, loading, request } = useFetch();
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (data) navigate("/account");
+    if (data) navigate('/conta');
   }, [data, navigate]);
 
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("img", img.raw);
-    formData.append("nome", nome.value);
-    formData.append("peso", peso.value);
-    formData.append("idade", idade.value);
+    formData.append('img', img.raw);
+    formData.append('nome', nome.value);
+    formData.append('peso', peso.value);
+    formData.append('idade', idade.value);
 
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem('token');
     const { url, options } = PHOTO_POST(formData, token);
     request(url, options);
   }
 
-  function handleImageChange({ target }) {
+  function handleImgChange({ target }) {
     setImg({
       preview: URL.createObjectURL(target.files[0]),
       raw: target.files[0],
@@ -43,19 +43,23 @@ const UserPhotoPost = () => {
 
   return (
     <section className={`${styles.photoPost} animeLeft`}>
-      <Head title="Post your photo" />
+      <Head title="Poste sua foto" />
       <form onSubmit={handleSubmit}>
-        <Input label="Name" type="text" name="name" {...nome} />
-        <Input label="Weight" type="number" name="weight" {...peso} />
-        <Input label="Age" type="number" name="age" {...idade} />
+        <Input label="Nome" type="text" name="nome" {...nome} />
+        <Input label="Peso" type="number" name="peso" {...peso} />
+        <Input label="Idade" type="number" name="idade" {...idade} />
         <input
           className={styles.file}
           type="file"
           name="img"
           id="img"
-          onChange={handleImageChange}
+          onChange={handleImgChange}
         />
-        {loading ? <Button disabled>Sending...</Button> : <Button>Send</Button>}
+        {loading ? (
+          <Button disabled>Enviando...</Button>
+        ) : (
+          <Button>Enviar</Button>
+        )}
         <Error error={error} />
       </form>
       <div>

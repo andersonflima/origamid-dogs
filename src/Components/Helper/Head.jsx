@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 
-const Head = ({ title, description }) => {
+const Head = (props) => {
   React.useEffect(() => {
-    document.title = title + " | Dogs";
+    document.title = props.title + ' | Dogs';
     document
       .querySelector("meta[name='description']")
-      .setAttribute("content", description || "");
-  }, [title, description]);
+      .setAttribute('content', props.description || '');
+  }, [props]);
 
   return <></>;
 };

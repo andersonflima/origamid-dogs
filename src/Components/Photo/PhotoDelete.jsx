@@ -1,15 +1,13 @@
-import React from "react";
-import styles from "./PhotoDelete.module.css";
-import { PHOTO_DELETE } from "../../Api";
-import useFetch from "../../Hooks/useFetch";
+import React from 'react';
+import styles from './PhotoDelete.module.css';
+import { PHOTO_DELETE } from '../../Api';
+import useFetch from '../../Hooks/useFetch';
 
 const PhotoDelete = ({ id }) => {
   const { loading, request } = useFetch();
 
   async function handleClick() {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this photo?",
-    );
+    const confirm = window.confirm('Tem certeza que deseja deletar?');
     if (confirm) {
       const { url, options } = PHOTO_DELETE(id);
       const { response } = await request(url, options);
@@ -20,12 +18,12 @@ const PhotoDelete = ({ id }) => {
   return (
     <>
       {loading ? (
-        <button disabled className={styles.delete}>
-          Deleting...
+        <button className={styles.delete} disabled>
+          Deletar
         </button>
       ) : (
         <button onClick={handleClick} className={styles.delete}>
-          Delete
+          Deletar
         </button>
       )}
     </>

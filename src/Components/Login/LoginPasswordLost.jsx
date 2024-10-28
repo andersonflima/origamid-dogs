@@ -1,61 +1,48 @@
-import React from "react";
-import Input from "../Forms/Input";
-import Button from "../Forms/Button";
-import Error from "../Helper/Error";
-import useForm from "../../Hooks/useForm";
-import useFetch from "../../Hooks/useFetch";
-import { PASSWORD_RESET } from "../../Api";
-import Head from "../Helper/Head";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import Input from '../Forms/Input';
+import Button from '../Forms/Button';
+import useForm from '../../Hooks/useForm';
+import useFetch from '../../Hooks/useFetch';
+import { PASSWORD_LOST } from '../../Api';
+import Error from '../Helper/Error';
+import Head from '../Helper/Head';
 
-const LoginPasswordReset = () => {
-  const [login, setLogin] = React.useState("");
-  const [key, setKey] = React.useState("");
-  const password = useForm();
-  const { error, loading, request } = useFetch();
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const key = params.get("key");
-    const login = params.get("login");
-    if (key) setKey(key);
-    if (login) setLogin(login);
-  }, []);
+const LoginPasswordLost = () => {
+  const login = useForm();
+  const { data, loading, error, request } = useFetch();
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (password.validate()) {
-      const { url, options } = PASSWORD_RESET({
-        login,
-        key,
-        password: password.value,
+    if (login.validate()) {
+      const { url, options } = PASSWORD_LOST({
+        login: login.value,
+        url: window.location.href.replace('perdeu', 'resetar'),
       });
-      const { response } = await request(url, options);
-      if (response.ok) navigate("/login");
+      const { json } = await request(url, options);
+      console.log(json);
     }
   }
 
   return (
     <section className="animeLeft">
-      <Head title="Resete a senha" />
-      <h1 className="title">Resete a senha</h1>
-      <form onSubmit={handleSubmit}>
-        <Input
-          label="Nova senha"
-          type="password"
-          name="password"
-          {...password}
-        />
-        {loading ? (
-          <Button disabled>Reseteando...</Button>
-        ) : (
-          <Button>Resetar</Button>
-        )}
-      </form>
+      <Head title="Perdeu a senha" />
+      <h1 className="title">Perdeu a senha?</h1>
+      {data ? (
+        <p style={{ color: '#4c1' }}>{data}</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <Input label="Email / Usuário" type="text" name="login" {...login} />
+          {loading ? (
+            <Button disabled>Enviando...</Button>
+          ) : (
+            <Button>Enviar Email</Button>
+          )}
+        </form>
+      )}
+
       <Error error={error} />
     </section>
   );
 };
 
-export default LoginPasswordReset;
+export default LoginPasswordLost;
